@@ -21,7 +21,7 @@ apply plugin: "java"
 //version = System.getenv('RELEASE_TYPE') == "release" ? "${semver}" : "${semver}+${getGitRef()}"
 group = "li.cil.manual.client"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "utf-8"
