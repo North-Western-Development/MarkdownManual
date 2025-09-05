@@ -1,11 +1,11 @@
 modLoader = "javafml"
-loaderVersion = "[${loaderVersion},)"
-issueTrackerURL = "https://github.com/MightyPirates/MarkdownManual/issues"
+loaderVersion = "[20,)"
+issueTrackerURL = "https://github.com/therealm18/MarkdownManual/issues"
 license = "MIT"
 
 [[mods]]
 modId = "markdown_manual"
-version = "${version}"
+version = "${file.jarVersion}"
 displayName = "Markdown Manual"
 authors = "Sangar"
 description = '''
@@ -15,27 +15,20 @@ Library mod providing a convenient way of defining in-game manuals.
 [[dependencies.markdown_manual]]
 modId = "neoforge"
 type = "required"
-versionRange = "[${neoforgeVersion},)"
+versionRange = "[20,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.markdown_manual]]
 modId = "minecraft"
 type = "required"
-versionRange = "${minecraftVersion}"
+versionRange = "1.20.4"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.markdown_manual]]
 modId = "architectury"
 type = "required"
-versionRange = "[${architecturyVersion},)"
+versionRange = "[11.1.17,)"
 ordering = "AFTER"
 side = "BOTH"
-
-[mc-publish]
-modrinth = "nPQ9xkPg"
-curseforge = 502485
-dependencies = [
-    "architectury@>=${architecturyVersion}(required){modrinth:lhGA9TYQ}{curseforge:419699}"
-]
