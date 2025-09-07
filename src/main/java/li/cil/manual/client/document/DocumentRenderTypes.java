@@ -37,8 +37,7 @@ public final class DocumentRenderTypes extends RenderType {
     }
 
     public static void draw(final RenderType renderType, final Consumer<VertexConsumer> callback) {
-        final BufferBuilder builder = Tesselator.getInstance().getBuilder();
-        final MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(builder);
+        final MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(new ByteBufferBuilder(2000));
         final VertexConsumer buffer = bufferSource.getBuffer(renderType);
 
         callback.accept(buffer);

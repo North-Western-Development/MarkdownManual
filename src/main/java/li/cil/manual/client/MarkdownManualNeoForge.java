@@ -1,7 +1,6 @@
-package li.cil.manual.client.neoforge;
+package li.cil.manual.client;
 
 import li.cil.manual.api.util.Constants;
-import li.cil.manual.client.ClientSetup;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;

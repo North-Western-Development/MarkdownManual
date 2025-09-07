@@ -1,6 +1,7 @@
 package li.cil.manual.api.render;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -29,8 +30,7 @@ public interface FontRenderer {
      * @param argb     the color to render the string with.
      */
     default void draw(final GuiGraphics graphics, final CharSequence value, final int argb) {
-        final BufferBuilder builder = Tesselator.getInstance().getBuilder();
-        final MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(builder);
+        final MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(new ByteBufferBuilder(2000));
         drawInBatch(value, argb, graphics.pose().last().pose(), buffer);
         buffer.endBatch();
     }
