@@ -10,7 +10,10 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.9.0'
 }
 
-rootProject.name = "markdown_manual-${minecraft_version}-${minecraft_sdk}-${version}"
+if (project.hasProperty("semver"))
+    rootProject.name = "markdown_manual-${minecraft_version}-${minecraft_sdk}-${semver}"
+else
+    rootProject.name = "markdown_manual-${minecraft_version}-${minecraft_sdk}"
 
 def substituteLocal(final directoryName, final libraryName) {
     final def path = new File("../${directoryName}")
