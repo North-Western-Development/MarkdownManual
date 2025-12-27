@@ -38,8 +38,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: markdown-manual-artifacts
-          path: |
-            ./common/build/libs/*-api.jar
-            ./fabric/build/libs/*.jar
-            ./forge/build/libs/*.jar
-            ./neoforge/build/libs/*.jar
+          path: build/libs/*.jar
