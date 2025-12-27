@@ -19,6 +19,7 @@ apply plugin: "java"
 //}
 //
 //version = System.getenv('RELEASE_TYPE') == "release" ? "${semver}" : "${semver}+${getGitRef()}"
+version = "${semver}"
 group = "li.cil.manual.client"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -179,7 +180,7 @@ curseforge {
         addGameVersion getCurseforgeSDKValue(minecraft_sdk)
         addGameVersion minecraft_version
         addGameVersion "Java 21"
-        mainArtifact "build/libs/markdown_manual-${minecraft_version}-${minecraft_sdk}-${semver}.jar"
+        mainArtifact "build/libs/markdown_manual-${minecraft_version}-${minecraft_sdk}-${version}.jar"
     }
 }
 
@@ -187,7 +188,7 @@ modrinth {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = modrinth_project_id
     versionType = System.getenv('RELEASE_TYPE') ?: "alpha"
-    uploadFile = "build/libs/markdown_manual-${minecraft_version}-${minecraft_sdk}-${semver}.jar"
+    uploadFile = "build/libs/markdown_manual-${minecraft_version}-${minecraft_sdk}-${version}.jar"
     gameVersions = [minecraft_version]
     loaders = [minecraft_sdk]
     changelog = System.getenv("CHANGELOG") ?: "Changelog not available."
