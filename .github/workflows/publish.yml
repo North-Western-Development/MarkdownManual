@@ -33,60 +33,23 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ubuntu-latest-gradle-
+          restore-keys: ubuntu-24.04-gradle-
 
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v2
 
       - name: Build with Gradle
-        run: ./gradlew -PmodVersion='${{ steps.split_tag.outputs.mod_version }}' build
-
-      - name: Remove shadow JARs
-        run: |
-          rm fabric/build/libs/*-dev-shadow.jar
-          rm forge/build/libs/*-dev-shadow.jar
-          rm neoforge/build/libs/*-dev-shadow.jar
+        run: ./gradlew -PmodVersion='${{ steps.split_tag.outputs.mod_version }}' publish
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+          RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
+          CHANGELOG: ${{ github.event.release.body }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Add Artifacts to Github Release
         uses: alexellis/upload-assets@0.4.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          asset_paths: '["./fabric/build/libs/*.jar","./forge/build/libs/*.jar","./neoforge/build/libs/*.jar","./common/build/libs/*-api.jar"]'
-
-      - uses: actions/upload-artifact@v4
-        name: Upload Artifacts
-        id: upload-artifacts
-        with:
-          name: jar-files
-          path: |
-            ./common/build/libs/*-api.jar
-            ./fabric/build/libs/*.jar
-            ./forge/build/libs/*.jar
-            ./neoforge/build/libs/*.jar
-          retention-days: 1
-
-  publish:
-    strategy:
-      matrix:
-        loader: [ fabric, forge, neoforge ]
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: jar-files
-
-      - name: Publish (${{ matrix.loader }})
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          name: ${{ github.event.repository.name }}-MC${{ needs.build.outputs.mc_version }}-${{ needs.build.outputs.mod_version }}
-          version: MC${{ needs.build.outputs.mc_version }}-${{ matrix.loader }}-${{ needs.build.outputs.mod_version }}
-          java: Java 21
-
-          files: ${{ matrix.loader }}/build/libs/*.jar
-
-          modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
-          curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
+          asset_paths: '["./build/libs/*.jar"]'
