@@ -8,17 +8,13 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     outputs:
-      mc_version: ${{ steps.split_tag.outputs.mc_version }}
-      mod_version: ${{ steps.split_tag.outputs.mod_version }}
+      mc_version: ${{ steps.extract_branch.outputs.branch }}
+      mod_version: ${{ github.event.release.tag_name }}
 
     steps:
-      - name: Extract Version from Tag
-        id: split_tag
-        run: |
-          tag=${{ github.event.release.tag_name }}
-          parts=(${tag//\// })
-          echo "mc_version=${parts[0]}" >> $GITHUB_OUTPUT
-          echo "mod_version=${parts[1]}" >> $GITHUB_OUTPUT
+      - name: Extract branch name
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+        id: extract_branch
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -39,7 +35,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v2
 
       - name: Build with Gradle
-        run: ./gradlew -PmodVersion='${{ steps.split_tag.outputs.mod_version }}' publish
+        run: ./gradlew -PmodVersion='${{ github.event.release.tag_name }}' publish
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
