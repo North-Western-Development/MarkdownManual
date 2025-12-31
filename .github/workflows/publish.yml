@@ -32,7 +32,7 @@ jobs:
           restore-keys: ubuntu-24.04-gradle-
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v2
+        uses: gradle/actions/wrapper-validation@v5
 
       - name: Build with Gradle
         run: ./gradlew -Psemver='${{ github.event.release.tag_name }}' publish
